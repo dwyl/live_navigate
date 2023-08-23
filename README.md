@@ -9,12 +9,13 @@
 1. Navigate between LiveComponents
 2. Active tab
 
+<img width="874" alt="Screenshot 2023-08-23 at 09 43 44" src="https://github.com/dwyl/live_navigate/assets/6793008/445519d2-2677-4b7d-baaf-8d91d4b1c6dd">
+
 ## Navigation
 
 We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML (see the Active Page below).
 
 We implement the navbar with a traditional "ul/li".
-
 ```html
 <ul>
     <%= for {label, page, uri} <- @menu do %>
