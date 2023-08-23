@@ -1,5 +1,7 @@
 defmodule LiveNavWeb.P2 do
-  use Phoenix.LiveComponent
+  use LiveNavWeb, :live_component
+
+  # use Phoenix.LiveComponent
   import LiveNavWeb.CoreComponents
 
   @impl true

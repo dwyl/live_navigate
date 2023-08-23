@@ -13,7 +13,8 @@ defmodule LiveNav.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: LiveNav.PubSub},
       # Start the Endpoint (http/https)
-      LiveNavWeb.Endpoint
+      LiveNavWeb.Endpoint,
+      {DynamicSupervisor, name: MyDynSup, strategy: :one_for_one}
       # Start a worker by calling: LiveNav.Worker.start_link(arg)
       # {LiveNav.Worker, arg}
     ]
