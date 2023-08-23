@@ -1,0 +1,18 @@
+<nav class="flex justify-between items-center font-bold text-[bisque] bg-[midnightblue]">
+  <h3 class="px-2">NavBar: Livecomponents</h3>
+  <ul class="list-none flex">
+    <%= for {label, page, uri} <- @menu do %>
+      <li class="rounded-md px-2 py-2">
+        <.link patch={page} class={["", uri == @current_path && @active]}>
+          <%= label %>
+        </.link>
+      </li>
+    <% end %>
+  </ul>
+</nav>
+<main class="px-4 py-20 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl">
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </div>
+</main>
