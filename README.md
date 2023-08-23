@@ -46,7 +46,7 @@ assign(socket,
       {"Page 1", "/?page=p1", "p1"},
       {"Page 2", "/?page=p2", "p2"}
       ],
-  active: "some classes"
+  active: "text-[midnightblue] bg-[bisque] px-1 py-1
 )
 ```
 
