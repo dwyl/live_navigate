@@ -4,7 +4,7 @@
  mix phx.new live_nav --no-ecto --no-dashboard --no-gettext --no-mailer
 ```
 
-‼️
+‼️ Draft mode - please raise issues
 
 ## Objectives
 
@@ -15,7 +15,7 @@
 
 ## Navigation
 
-We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML.,We implement the navbar with a traditional "ul/li".
+We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML. We implement the navbar with a traditional "ul/li".
 
 ```elixir
 #layouts/app.html.heex
@@ -35,7 +35,7 @@ We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. I
 
 We used the attributes `current_path`, `active` and `menu`. They are set up in the `mount` function.
 
-The `active` attribute is a Tailwind class to hightlight the nav element when it is active.
+The `active` attribute is a Tailwind class to hightlight the nav element when it is active: we just invert the colours of the text and background.
 
 The `menu` assign is a list of tuples containing the label, path and selector per LiveComponent:
 
@@ -50,15 +50,15 @@ assign(socket,
 )
 ```
 
-We mount a LiveView say at the uri "/", declared in the router via `live "/", HomeLive`.
+We mount a LiveView say at the uri "/", declared in the router module via `live "/", HomeLive`.
 
 One way to render LiveComponents by navigation within a LiveView is to `<.link patch />`, cf [here](https://hexdocs.pm/phoenix_live_view/live-navigation.html).
 
-We set the `patch` attribute as a query string `patch={"/?page=1"}`. When we click on this link, the query string will be captured in a `handle_params(%{"page" => page}, _uri, socket)`callback of the LV.
+We set the `patch` attribute value as a query string `patch={"/?page=1"}`. When we click on this link, the query string will be captured in a `handle_params(%{"page" => page}, _uri, socket)` callback of the LV.
 
 In this callback, we update the `current_path` assign of the LV. By changing an assign of the LV, we trigger a render.
 
-In the LiveView, we have specific `render/1` functions per LiveComponent. For example, when we click on "page 1", we assign `current_path: "p1"` and reach `render(%{current_path: p1})`. The LiveView will render this specific LiveComponent.
+In the LiveView, we have several `render/1`, namely one specific per LiveComponent. For example, when we click on "page 1", we assign `current_path: "p1"` and reach `render(%{current_path: p1})`. The LiveView will render this specific LiveComponent.
 
 ## LiveComponent
 
