@@ -266,5 +266,8 @@ Now, each time we click on the counter in the LV, we send an update to the embed
 
 <img width="298" alt="Screenshot 2023-08-23 at 12 06 28" src="https://github.com/dwyl/live_navigate/assets/6793008/088e1b30-22b6-480f-a691-dfdeb051574c">
 
-
 Note that we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is already mounted. This means that if we want to send messages between LiveComponents, we have to send a message to the parent Liveview, save it in the LV state, and the LV will pass it to the the targeted LC once mounted.
+
+## Stream to LiveComponent
+
+We illustrate a streaming of data to a child LiveComponent in the branch "stream". We use `Websockex` for this and broadcast to hte LiveView. This process is dynamically supervised (since it would be stopped when we unmount the LV). We subscribe to the topic when we mount the LC (care is taken not to subscribe several times). When the LV receives an event, we update the assigns in the LV, and the callback `update/2` in the LC receives them. To illustrate this, we bring in a chart - via a hook - that is updated via a `push_event` (and the alter-ego `handleEvent`).
