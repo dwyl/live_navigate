@@ -200,6 +200,9 @@ end
 
 and define a new LC "P3". When you click on the button, the count is incremented in the LC as well.
 
+<img width="242" alt="Screenshot 2023-08-23 at 12 11 04" src="https://github.com/dwyl/live_navigate/assets/6793008/39aa6d50-9ceb-4500-8ef2-508c83e11a92">
+
+
 ## Send data from the LV to an embedded LC
 
 We use `Phoenix.LiveView.send_update` (<https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#send_update/3>).
