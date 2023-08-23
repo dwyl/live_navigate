@@ -127,6 +127,9 @@ end
 
 When you click on the button in the LV and navigate to say page 1, it will display the current value of the counter.
 
+<img width="1126" alt="Screenshot 2023-08-23 at 12 13 54" src="https://github.com/dwyl/live_navigate/assets/6793008/8d6a4eb8-e56a-40a5-aeba-8cf58f0e5282">
+
+
 ## Pass data from a LiveComponent to the parent LiveView
 
 Since the LV and LC are in the same process, we will use a simple `Kernel.send`.
