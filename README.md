@@ -129,7 +129,6 @@ When you click on the button in the LV and navigate to say page 1, it will displ
 
 <img width="1126" alt="Screenshot 2023-08-23 at 12 13 54" src="https://github.com/dwyl/live_navigate/assets/6793008/8d6a4eb8-e56a-40a5-aeba-8cf58f0e5282">
 
-
 ## Pass data from a LiveComponent to the parent LiveView
 
 Since the LV and LC are in the same process, we will use a simple `Kernel.send`.
@@ -205,10 +204,11 @@ and define a new LC "P3". When you click on the button, the count is incremented
 
 <img width="242" alt="Screenshot 2023-08-23 at 12 11 04" src="https://github.com/dwyl/live_navigate/assets/6793008/39aa6d50-9ceb-4500-8ef2-508c83e11a92">
 
-
 ## Send data from the LV to an embedded LC
 
-We use `Phoenix.LiveView.send_update` (<https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#send_update/3>).
+We saw we can use an attribute in the `live_component` to pass data from the LV to the LC.
+
+We can also use `Phoenix.LiveView.send_update` (<https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#send_update/3>).
 
 Remove the "lc_count" assign for "P3".
 
@@ -265,6 +265,5 @@ end
 Now, each time we click on the counter in the LV, we send an update to the embeded LC to increment its internal state.
 
 <img width="298" alt="Screenshot 2023-08-23 at 12 06 28" src="https://github.com/dwyl/live_navigate/assets/6793008/088e1b30-22b6-480f-a691-dfdeb051574c">
-
 
 > we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is embedded in the LV.
