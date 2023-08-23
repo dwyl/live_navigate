@@ -53,10 +53,13 @@ defmodule LiveNavWeb.HomeLive do
 
   @impl true
   def handle_event("update_count", _unsigned_params, socket) do
-    Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
+    Task.start(fn ->
+
+      Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
       id: 3,
       update_count: socket.assigns.count + 1
-    )
+      )
+    end)
 
     {:noreply, update(socket, :count, &(&1 + 1))}
   end

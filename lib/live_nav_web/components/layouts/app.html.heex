@@ -3,7 +3,7 @@
   <ul class="list-none flex">
     <%= for {label, page, uri} <- @menu do %>
       <li class="rounded-md px-2 py-2">
-        <.link patch={page} class={["", uri == @current_path && @active]}>
+        <.link patch={page} class={uri == @current_path && @active}>
           <%= label %>
         </.link>
       </li>
