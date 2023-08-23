@@ -1,6 +1,6 @@
 defmodule LiveNavWeb.HomeLive do
   use LiveNavWeb, :live_view
-  alias LiveNavWeb.{P1, P2}
+  alias LiveNavWeb.{P1, P2, P3}
 
   require Logger
 
@@ -44,12 +44,20 @@ defmodule LiveNavWeb.HomeLive do
       <h1>Home page</h1>
       <.button type="button" phx-click="update_count">Inc</.button>
       <%= @count %>
+
+      <hr />
+      <.live_component module={P3} id={3} />
     </div>
     """
   end
 
   @impl true
   def handle_event("update_count", _unsigned_params, socket) do
+    Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
+      id: 3,
+      update_count: socket.assigns.count + 1
+    )
+
     {:noreply, update(socket, :count, &(&1 + 1))}
   end
 

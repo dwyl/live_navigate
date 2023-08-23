@@ -140,7 +140,7 @@ def mount(socket) do
 end
 ```
 
-The HTML is updated to:
+We `import LiveNavWeb.CoreComponents` to have access to the built-in "core components". The HTML is updated to
 
 ```elixir
 #P2.ex
@@ -178,3 +178,84 @@ def handle_info({:p2_count, v}, socket) do
   {:noreply, socket}
 end
 ```
+
+## Embed a LC in the LV
+
+We can of course display a LC in the LV. Update the HTML:
+
+```elixir
+def render(assigns) do
+  ~H"""
+  <div>
+    <h1>Home page</h1>
+    <.button type="button" phx-click="update_count">Inc</.button>
+    <%= @count %>
+
+    <hr />
+    <.live_component module={P3} id={3} lc_count={@count} />
+  </div>
+  """
+end
+```
+
+and define a new LC "P3". When you click on the button, the count is incremented in the LC as well.
+
+## Send data from the LV to an embedded LC
+
+We use `Phoenix.LiveView.send_update` (<https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#send_update/3>).
+
+Remove the "lc_count" assign for "P3".
+
+```elixir
+def render(assigns) do
+  ~H"""
+  <div>
+    <h1>Home page</h1>
+    <.button type="button" phx-click="update_count">Inc</.button>
+    <%= @count %>
+
+    <hr />
+    <.live_component module={P3} id={3} />
+  </div>
+  """
+end
+```
+
+Then redefine "P3" and add an internal assign `update_count` (via the `mount/1` of the LC):
+
+```elixir
+#P3.ex
+def render(assigns) do
+  ~H"""
+  <div>
+    <h1>Page 3</h1>
+
+    <p><%= @update_count %></p>
+  </div>
+  """
+end
+
+@impl true
+def mount(socket) do
+  {:ok, assign(socket, :update_count, 0)}
+end
+```
+
+We don't pass anymore the updated `count` attribute from the LV when we click the button, but instead
+we `send_update` as:
+
+```elixir
+#HomeLive.ex
+def handle_event("update_count", _unsigned_params, socket) do
+  Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
+    id: 3,
+    update_count: socket.assigns.count + 1
+  )
+
+  {:noreply, update(socket, :count, &(&1 + 1))}
+end
+```
+
+Now, each time we click on the counter in the LV, we send an update to the embeded LC to increment its internal state.
+
+> we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is embedded in the LV.
