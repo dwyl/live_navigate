@@ -40,12 +40,14 @@ The `active` attribute is a Tailwind class to hightlight the nav element when it
 The `menu` assign is a list of tuples containing the label, path and selector per LiveComponent:
 
 ```elixir
-menu: [
-    {"Home", path(socket, LiveNavWeb.Router, ~p"/"), ""},
-    {"Page 1", "/?page=p1", "p1"},
-    {"Page 2", "/?page=p2", "p2"}
-    ],
-active: "some classes"
+assign(socket,
+  menu: [
+      {"Home", path(socket, LiveNavWeb.Router, ~p"/"), ""},
+      {"Page 1", "/?page=p1", "p1"},
+      {"Page 2", "/?page=p2", "p2"}
+      ],
+  active: "some classes"
+)
 ```
 
 We mount a LiveView say at the uri "/", declared in the router via `live "/", HomeLive`.
@@ -64,8 +66,6 @@ We set up a LiveView (LV) and LiveComponents (LC) as children to this LV. Each L
 
 ```elixir
 # home_live.ex
-
-
 def render(%{current_path: "p2"}) do
   ~H"""
     <.live_component module={P2} id={2}/>
@@ -76,11 +76,14 @@ end
 The static HTML is simply:
 
 ```elixir
-~H"""
-  <div>
-    <h1>Page 2 </h1>
-  </div>
-"""
+#P2.ex
+def render(assigns) do
+  ~H"""
+    <div>
+      <h1>Page 2 </h1>
+    </div>
+  """
+end
 ```
 
 > Note that a LC must have a single static HTML tag at the root (think of `React`)
@@ -100,20 +103,26 @@ Suppose we want to increment a counter in the LiveView. We have a button with a 
 We can pass data from the LV to the LC via **attributes**. Since a LC is rendered from the LV, we can pass the LV attribute `count` to the LC
 
 ```elixir
-~H"""
-  <.live_component module={P2} id={2} lc_count={@count}/>                                            ^^^
-"""
+#HomeLive.ex
+def render(%{current_path: "p2"}) do
+  ~H"""
+    <.live_component module={P2} id={2} lc_count={@count}/>                                            ^^^
+  """
+end
 ```
 
 and the static HTML of a LiveComponent will have an assign `assigns.lc_count` available to render:
 
 ```elixir
-~H"""
-  <div>
-    <h1>Page 1</h1>
-    <%= @lc_count %>
-  </div>
-"""
+#P2.ex
+def render(assigns) do
+  ~H"""
+    <div>
+      <h1>Page 1</h1>
+      <%= @lc_count %>
+    </div>
+  """
+end
 ```
 
 When you click on the button in the LV and navigate to say page 1, it will display the current value of the counter.
