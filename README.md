@@ -1,5 +1,8 @@
 # LiveNav
 
+
+!! This is a draft. Please feel free to comment, change, correct !!
+
 ```bash
  mix phx.new live_nav --no-ecto --no-dashboard --no-gettext --no-mailer
 ```
