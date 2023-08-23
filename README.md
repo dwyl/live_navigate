@@ -133,7 +133,7 @@ When you click on the button in the LV and navigate to say page 1, it will displ
 
 Since the LV and LC are in the same process, we will use a simple `Kernel.send`.
 
-To illustrate this, we will implement a counter in "page 2". In the `mount/1` of "P2" LiveComponenent, we add an assign
+To illustrate this, we will implement a counter in "page 2". In the `mount/1` of "P2" LiveComponent, we add an assign
 
 ```elixir
 #P2.ex
@@ -266,4 +266,4 @@ Now, each time we click on the counter in the LV, we send an update to the embed
 
 <img width="298" alt="Screenshot 2023-08-23 at 12 06 28" src="https://github.com/dwyl/live_navigate/assets/6793008/088e1b30-22b6-480f-a691-dfdeb051574c">
 
-> we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is embedded in the LV.
+Note that we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is already mounted.
