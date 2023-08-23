@@ -258,4 +258,7 @@ end
 
 Now, each time we click on the counter in the LV, we send an update to the embeded LC to increment its internal state.
 
+<img width="298" alt="Screenshot 2023-08-23 at 12 06 28" src="https://github.com/dwyl/live_navigate/assets/6793008/088e1b30-22b6-480f-a691-dfdeb051574c">
+
+
 > we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is embedded in the LV.
