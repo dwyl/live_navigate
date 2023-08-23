@@ -24,7 +24,7 @@ We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. I
   <ul class="list-none flex">
     <%= for {label, page, uri} <- @menu do %>
       <li class="rounded-md px-2 py-2">
-        <.link patch={page} class={["", uri == @current_path && @active]}>
+        <.link patch={page} class={uri == @current_path && @active}>
           <%= label %>
         </.link>
       </li>
@@ -253,10 +253,9 @@ we `send_update` as:
 ```elixir
 #HomeLive.ex
 def handle_event("update_count", _unsigned_params, socket) do
-  Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
-    id: 3,
-    update_count: socket.assigns.count + 1
-  )
+  Task.start(fn ->
+    Phoenix.LiveView.send_update(LiveNavWeb.P3, id: 3, update_count: socket.assigns.count + 1)
+  end)
 
   {:noreply, update(socket, :count, &(&1 + 1))}
 end
