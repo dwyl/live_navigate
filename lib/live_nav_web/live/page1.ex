@@ -1,7 +1,7 @@
 defmodule LiveNavWeb.P1 do
   use LiveNavWeb, :live_component
   require Logger
-  # use Phoenix.LiveComponent
+
   @topic "price"
 
   @impl true

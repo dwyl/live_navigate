@@ -1,7 +1,6 @@
 defmodule LiveNavWeb.P3 do
   use LiveNavWeb, :live_component
 
-  # use Phoenix.LiveComponent
 
   @impl true
   def render(assigns) do
