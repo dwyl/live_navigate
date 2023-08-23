@@ -2,7 +2,7 @@ defmodule LiveNavWeb.P1 do
   use Phoenix.LiveComponent
 
   @impl true
-  attr :sym, :integer
+  attr :lc_count, :integer
 
   def render(assigns) do
     ~H"""

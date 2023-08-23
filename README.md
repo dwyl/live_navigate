@@ -1,11 +1,10 @@
 # LiveNav
 
-
-!! This is a draft. Please feel free to comment, change, correct !!
-
 ```bash
  mix phx.new live_nav --no-ecto --no-dashboard --no-gettext --no-mailer
 ```
+
+‼️
 
 ## Objectives
 
@@ -16,24 +15,27 @@
 
 ## Navigation
 
-We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML (see the Active Page below).
+We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML.,We implement the navbar with a traditional "ul/li".
 
-We implement the navbar with a traditional "ul/li".
-```html
-<ul>
+```elixir
+#layouts/app.html.heex
+<nav class="flex justify-between items-center font-bold text-[bisque] bg-[midnightblue]">
+  <h3 class="px-2">NavBar: Livecomponents</h3>
+  <ul class="list-none flex">
     <%= for {label, page, uri} <- @menu do %>
-      <li>
+      <li class="rounded-md px-2 py-2">
         <.link patch={page} class={["", uri == @current_path && @active]}>
           <%= label %>
         </.link>
       </li>
     <% end %>
   </ul>
+</nav>
 ```
 
-We used the attributes `current_path`, `active` and `menu`. They will be assigned in the `mount` function.
+We used the attributes `current_path`, `active` and `menu`. They are set up in the `mount` function.
 
-The `active`is a Tailwind class to hightlight the nav element when it is active.
+The `active` attribute is a Tailwind class to hightlight the nav element when it is active.
 
 The `menu` assign is a list of tuples containing the label, path and selector per LiveComponent:
 
@@ -50,28 +52,33 @@ We mount a LiveView say at the uri "/", declared in the router via `live "/", Ho
 
 One way to render LiveComponents by navigation within a LiveView is to `<.link patch />`, cf [here](https://hexdocs.pm/phoenix_live_view/live-navigation.html).
 
-We use the query string `patch={"/?page=1"}`. When we click on this link, the query string will be captured in a `handle_params`callback of the LV.
+We set the `patch` attribute as a query string `patch={"/?page=1"}`. When we click on this link, the query string will be captured in a `handle_params(%{"page" => page}, _uri, socket)`callback of the LV.
 
 In this callback, we update the `current_path` assign of the LV. By changing an assign of the LV, we trigger a render.
 
-In the LiveView, we have specific `render/1` functions per LiveComponent. For example `render(%{current_path: 1})`. The LiveView will render this specific LiveComponent.
+In the LiveView, we have specific `render/1` functions per LiveComponent. For example, when we click on "page 1", we assign `current_path: "p1"` and reach `render(%{current_path: p1})`. The LiveView will render this specific LiveComponent.
 
 ## LiveComponent
 
-We set up a LiveView (LV) and LiveComponents (LC) as children to this LV. Each LC has its own state.
+We set up a LiveView (LV) and LiveComponents (LC) as children to this LV. Each LC has its own state. They are [render with](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html) `live_component`:
 
 ```elixir
-~H"""
-  <.live_component module={P2} id={2}/>
-"""
+# home_live.ex
+
+
+def render(%{current_path: "p2"}) do
+  ~H"""
+    <.live_component module={P2} id={2}/>
+  """
+end
 ```
 
-Tthe static HTML is simply:
+The static HTML is simply:
 
 ```elixir
 ~H"""
   <div>
-    <h1>Page 1</h1>
+    <h1>Page 2 </h1>
   </div>
 """
 ```
@@ -90,15 +97,15 @@ The assign `current_path` will match or not the "uri" each time we navigate.
 
 Suppose we want to increment a counter in the LiveView. We have a button with a `phx-click` attribute that triggers a `handle_event` callback where we change the attribute say `count`.
 
-We can pass data from the LV to the LC via **attributes**. A LC is rendered from the LV. Note that we pass an attribute `count` from the LV to the LC
+We can pass data from the LV to the LC via **attributes**. Since a LC is rendered from the LV, we can pass the LV attribute `count` to the LC
 
 ```elixir
 ~H"""
-  <.live_component module={P2} id={2} lc_count={@count}/>
+  <.live_component module={P2} id={2} lc_count={@count}/>                                            ^^^
 """
 ```
 
-and modify the static HTML of a LiveComponent
+and the static HTML of a LiveComponent will have an assign `assigns.lc_count` available to render:
 
 ```elixir
 ~H"""
@@ -107,4 +114,58 @@ and modify the static HTML of a LiveComponent
     <%= @lc_count %>
   </div>
 """
+```
+
+When you click on the button in the LV and navigate to say page 1, it will display the current value of the counter.
+
+## Pass data from a LiveComponent to the parent LiveView
+
+Since the LV and LC are in the same process, we will use a simple `Kernel.send`.
+
+To illustrate this, we will implement a counter in "page 2". In the `mount/1` of "P2" LiveComponenent, we add an assign
+
+```elixir
+#P2.ex
+def mount(socket) do
+  {:ok, assign_new(socket, :p2_count, fn -> 0 end)}
+end
+```
+
+The HTML is updated to:
+
+```elixir
+#P2.ex
+import LiveNavWeb.CoreComponents
+
+def render(assigns) do
+  ~H"""
+  <div>
+    <h1>Page 2</h1>
+    <p><%= @lc_count %></p>
+    <.button type="button" phx-click="update_p2_count" phx-target={@myself}>Inc</.button>
+    <p>Page 2 count: <%= @p2_count %></p>
+  </div>
+  """
+end
+```
+
+We used the attribute `phx-target={@myself}`: when we click on the button, this will send an event to the LC, and not to the parent LV.
+
+When handle this event, we `Kernel.send` to `self()` (the core process, the LiveView):
+
+```elixir
+#P2.ex
+def handle_event("update_p2_count", _unsigned_params, socket) do
+  send(self(), {:p2_count, socket.assigns.p2_count})
+  {:noreply, update(socket, :p2_count, &(&1 + 1))}
+end
+```
+
+It remains to `handle_info` in the LV:
+
+```elixir
+def handle_info({:p2_count, v}, socket) do
+  IO.inspect(v)
+  {:noreply, socket}
+end
 ```

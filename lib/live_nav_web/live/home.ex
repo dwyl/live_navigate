@@ -24,8 +24,8 @@ defmodule LiveNavWeb.HomeLive do
     {:ok, socket}
   end
 
-  attr :current_path, :string
   @impl true
+
   def render(%{current_path: "p1"} = assigns) do
     ~H"""
     <.live_component module={P1} id={1} lc_count={@count} />
@@ -61,5 +61,11 @@ defmodule LiveNavWeb.HomeLive do
   # first pass "/"
   def handle_params(_p, _uri, socket) do
     {:noreply, assign(socket, :current_path, "")}
+  end
+
+  @impl true
+  def handle_info({:p2_count, v}, socket) do
+    IO.inspect(v)
+    {:noreply, socket}
   end
 end
