@@ -99,12 +99,6 @@ defmodule LiveNavWeb.HomeLive do
   end
 
   def handle_info(%{topic: "price", event: _event, payload: payload}, socket) do
-    IO.puts("task_________________")
-
-    # Task.start(fn ->
-    #   send_update(P1, id: 1, price_update: payload)
-    # end)
-
     {:noreply, assign(socket, :price_update, payload)}
   end
 end
