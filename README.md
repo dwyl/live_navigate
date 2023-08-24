@@ -17,9 +17,6 @@
  mix phx.new live_nav --no-ecto --no-dashboard --no-gettext --no-mailer
 ```
 
-## Tested
-
-100% coveralls [LiveView tests](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveViewTest.html#content)
 
 ## Navbar
 
@@ -273,6 +270,18 @@ Now, each time we click on the counter in the LV, we send an update to the embed
 <img width="298" alt="Screenshot 2023-08-23 at 12 06 28" src="https://github.com/dwyl/live_navigate/assets/6793008/088e1b30-22b6-480f-a691-dfdeb051574c">
 
 Note that we cannot `send_update` to an "un-mounted" LiveComponenent. This works because "P3" is already mounted. This means that if we want to send messages between LiveComponents, we have to send a message to the parent Liveview, save it in the LV state, and the LV will pass it to the the targeted LC once mounted.
+
+## Tested
+
+100% coveralls 
+
+Resources:
+
+- [LiveView tests](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveViewTest.html#content)
+
+-  [German Velasco video](https://www.youtube.com/watch?v=h8NURVLysrk)
+<img width="778" alt="Screenshot 2023-08-24 at 13 08 34" src="https://github.com/dwyl/live_navigate/assets/6793008/95403a85-5789-45aa-8dcc-b692804edd40">
+
 
 ## Stream to LiveComponent
 
