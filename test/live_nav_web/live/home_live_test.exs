@@ -3,9 +3,12 @@ defmodule LiveNavWeb.HomeLiveTest do
   use LiveNavWeb.ConnCase
 
   test "renders Home page", %{conn: conn} do
-    {:ok, _, html} = live(conn, "/")
+    {:ok, view, html} = live(conn, "/")
 
+    # html -> first mount
     assert html =~ "Home page"
+    # view -> socket mounted
+    assert has_element?(view, "h1", "Home page")
   end
 
   test "button inc on LV", %{conn: conn} do
