@@ -281,7 +281,7 @@ Resources:
 
 -  [German Velasco video](https://www.youtube.com/watch?v=h8NURVLysrk)
   
-<img width="778" alt="Screenshot 2023-08-24 at 13 08 34" src="https://github.com/dwyl/live_navigate/assets/6793008/95403a85-5789-45aa-8dcc-b692804edd40">
+[![GV video](<img width="778" alt="Screenshot 2023-08-24 at 13 08 34" src="https://github.com/dwyl/live_navigate/assets/6793008/95403a85-5789-45aa-8dcc-b692804edd40">)](https://www.youtube.com/watch?v=h8NURVLysrk)
 
 
 ## Stream to LiveComponent
