@@ -1,5 +1,4 @@
 defmodule LiveNavWeb.HomeLiveTest do
-  import Phoenix.ConnTest
   import Phoenix.LiveViewTest
   use LiveNavWeb.ConnCase
 
@@ -28,34 +27,34 @@ defmodule LiveNavWeb.HomeLiveTest do
     conn: conn
   } do
     {:ok, view, _html} = live(conn, "/")
-    view |> element("button#lv_inc") |> render_click()
+    view |> element("button", "Inc") |> render_click()
     assert render_component(LiveNavWeb.P3, id: 3, update_count: 1)
   end
 
   test "render navigation to LC1", %{conn: conn} do
     {:ok, view, _html} = live(conn, "/")
 
-    render_patch(view, "?page=p1") =~ "<h1>Page 1</h1>"
+    assert render_patch(view, "?page=p1") =~ "<h1>Page 1</h1>"
   end
 
   test "render navigation to LC2", %{conn: conn} do
     {:ok, view, _html} = live(conn, "/")
 
-    render_patch(view, "?page=p2") =~ "<h1>Page 2</h1>"
+    assert render_patch(view, "?page=p2") =~ "<h1>Page 2</h1>"
   end
 
   test "assert counter in page 1 is incremented when clicked in the LV", %{conn: conn} do
     {:ok, view, _} = live(conn, "/")
     view |> element("button#lv_inc") |> render_click()
-    render_patch(view, "?page=p1") =~ "<p>Updated count: 1</p>"
+    assert render_patch(view, "?page=p1") =~ "<p>Updated count: 1</p>"
   end
 
   test "test counter in page 2", %{conn: conn} do
     {:ok, view, _html} = live(conn, "/?page=p2")
 
-    view
-    |> element("button#lc2_inc")
-    |> render_click() =~
-      "<p>Page 2 count: 1</p>"
+    assert view
+           |> element("button#lc2_inc")
+           |> render_click() =~
+             "<p>Page 2 count: 1</p>"
   end
 end
