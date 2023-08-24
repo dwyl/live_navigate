@@ -1,21 +1,29 @@
 # LiveNav
 
+‼️ Draft mode - please raise issues
+
+## What? Objectives
+
+1. A simple navigation from a LiveView to pages made of LiveComponents
+2. Visualize the nvigation with Active tabs in the Navbar
+3. Explain how to pass data to/from the LiveView and LiveComponents
+4. A branch "stream" shows how data can be streamed and displayed into a [lightweight-charts](https://www.npmjs.com/package/lightweight-charts) "hooked" into the LiveComponent
+
+<img width="874" alt="Screenshot 2023-08-23 at 09 43 44" src="https://github.com/dwyl/live_navigate/assets/6793008/445519d2-2677-4b7d-baaf-8d91d4b1c6dd">
+
+## Build with
+
 ```bash
  mix phx.new live_nav --no-ecto --no-dashboard --no-gettext --no-mailer
 ```
 
-‼️ Draft mode - please raise issues
+## Tested
 
-## Objectives
+100% coveralls [LiveView tests](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveViewTest.html#content)
 
-1. Navigate between LiveComponents
-2. Active tab
+## Navbar
 
-<img width="874" alt="Screenshot 2023-08-23 at 09 43 44" src="https://github.com/dwyl/live_navigate/assets/6793008/445519d2-2677-4b7d-baaf-8d91d4b1c6dd">
-
-## Navigation
-
-We put a navigation `nav` tag in the "/components/layouts/app.html.heex" file. It will render some static HTML. We implement the navbar with a traditional "ul/li".
+We put a navigation `nav` tag in the **"/components/layouts/app.html.heex"** file. It will render some static HTML. We implement the navbar with a traditional "ul/li".
 
 ```elixir
 #layouts/app.html.heex
@@ -60,9 +68,9 @@ In this callback, we update the `current_path` assign of the LV. By changing an 
 
 In the LiveView, we have several `render/1`, namely one specific per LiveComponent. For example, when we click on "page 1", we assign `current_path: "p1"` and reach `render(%{current_path: p1})`. The LiveView will render this specific LiveComponent.
 
-## LiveComponent
+## LiveComponents
 
-We set up a LiveView (LV) and LiveComponents (LC) as children to this LV. Each LC has its own state. They are [render with](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html) `live_component`:
+We set up a LiveView (LV) and LiveComponents (LC) as children to this LV. Each LC has its own state. They are [rendered with](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html) `live_component`:
 
 ```elixir
 # home_live.ex

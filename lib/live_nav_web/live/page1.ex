@@ -8,7 +8,7 @@ defmodule LiveNavWeb.P1 do
     ~H"""
     <div>
       <h1>Page 1</h1>
-      <p><%= @lc_count %></p>
+      <p>Updated count: <%= @lc_count %></p>
     </div>
     """
   end

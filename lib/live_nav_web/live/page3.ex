@@ -7,7 +7,7 @@ defmodule LiveNavWeb.P3 do
     <div>
       <h1>Page 3</h1>
 
-      <p><%= @update_count %></p>
+      <p>Updated count: <%= @update_count %></p>
     </div>
     """
   end

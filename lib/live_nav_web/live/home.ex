@@ -18,8 +18,9 @@ defmodule LiveNavWeb.HomeLive do
           {"Page 2", "/?page=p2", "p2"}
         ]
       end)
-      |> assign_new(:active, fn -> active end)
-      |> assign_new(:count, fn -> 0 end)
+      |> assign(:active, active)
+      |> assign(:count, 0)
+      |> assign(:p2_count, 0)
 
     {:ok, socket}
   end
@@ -42,8 +43,9 @@ defmodule LiveNavWeb.HomeLive do
     ~H"""
     <div>
       <h1>Home page</h1>
-      <.button type="button" phx-click="update_count">Inc</.button>
-      <%= @count %>
+      <.button id="lv_inc" type="button" phx-click="update_count">Inc</.button>
+      <p>The counter: <%= @count %></p>
+      <p>The counter from page 2: <%= @p2_count %></p>
 
       <hr />
       <.live_component module={P3} id={3} />
@@ -52,12 +54,11 @@ defmodule LiveNavWeb.HomeLive do
   end
 
   @impl true
-  def handle_event("update_count", _unsigned_params, socket) do
+  def handle_event("update_count", _p, socket) do
     Task.start(fn ->
-
       Phoenix.LiveView.send_update(self(), LiveNavWeb.P3,
-      id: 3,
-      update_count: socket.assigns.count + 1
+        id: 3,
+        update_count: socket.assigns.count + 1
       )
     end)
 
@@ -77,6 +78,6 @@ defmodule LiveNavWeb.HomeLive do
   @impl true
   def handle_info({:p2_count, v}, socket) do
     IO.inspect(v)
-    {:noreply, socket}
+    {:noreply, assign(socket, :p2_count, v)}
   end
 end
