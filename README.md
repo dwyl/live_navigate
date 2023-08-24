@@ -1,4 +1,9 @@
 # LiveNav
+![Static Badge](https://img.shields.io/badge/Coverage-_100%25-green)
+
+
+
+
 
 ‼️ Draft mode - please raise issues
 
