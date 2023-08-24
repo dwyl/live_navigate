@@ -9,6 +9,9 @@
 3. Explain how to pass data to/from the LiveView and LiveComponents
 4. A branch "stream" shows how data can be streamed and displayed into a [lightweight-charts](https://www.npmjs.com/package/lightweight-charts) "hooked" into the LiveComponent
 
+https://youtu.be/h8NURVLysrk?feature=shared
+
+
 <img width="874" alt="Screenshot 2023-08-23 at 09 43 44" src="https://github.com/dwyl/live_navigate/assets/6793008/445519d2-2677-4b7d-baaf-8d91d4b1c6dd">
 
 ## Build with
